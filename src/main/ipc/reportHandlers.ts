@@ -1,0 +1,9 @@
+import { ipcMain } from 'electron';
+import { getDatabase } from '../database/connection';
+
+export function registerReportHandlers(): void {
+  const db=()=>getDatabase();
+  ipcMain.handle('reports:getCampaignReports', async ()=>db().prepare(`SELECT COALESCE(c.name,'Unassigned') AS campaign_name,COUNT(*) AS total_leads,SUM(CASE WHEN cl.priority_tier='Tier 1' THEN 1 ELSE 0 END) AS tier1_leads,SUM(CASE WHEN cl.status='Contacted' OR cl.date_contacted!='' THEN 1 ELSE 0 END) AS contacted,SUM(CASE WHEN cl.status='Replied' THEN 1 ELSE 0 END) AS replied,SUM(CASE WHEN cl.status IN ('Interested','Joined') THEN 1 ELSE 0 END) AS interested,SUM(CASE WHEN cl.status='Joined' THEN 1 ELSE 0 END) AS joined,ROUND(CAST(SUM(CASE WHEN cl.status='Joined' THEN 1 ELSE 0 END) AS REAL)/NULLIF(COUNT(*),0)*100,1) AS conversion_rate,ROUND(AVG(cl.recruitability_score),0) AS avg_recruitability FROM creator_leads cl LEFT JOIN campaigns c ON cl.campaign_id=c.id GROUP BY cl.campaign_id ORDER BY total_leads DESC`).all());
+  ipcMain.handle('reports:getNicheReports', async ()=>db().prepare(`SELECT niche,COUNT(*) AS total,SUM(CASE WHEN status IN ('Interested','Joined') THEN 1 ELSE 0 END) AS interested,SUM(CASE WHEN status='Joined' THEN 1 ELSE 0 END) AS joined FROM creator_leads WHERE niche!='' GROUP BY niche ORDER BY total DESC LIMIT 12`).all());
+  ipcMain.handle('reports:getRecruiterReports', async ()=>db().prepare(`SELECT COALESCE(r.name,'Unassigned') AS recruiter_name,COUNT(*) AS total_assigned,SUM(CASE WHEN cl.status='Contacted' OR cl.date_contacted!='' THEN 1 ELSE 0 END) AS contacted,SUM(CASE WHEN cl.status IN ('Interested','Joined') THEN 1 ELSE 0 END) AS interested,SUM(CASE WHEN cl.status='Joined' THEN 1 ELSE 0 END) AS joined FROM creator_leads cl LEFT JOIN recruiters r ON cl.assigned_recruiter_id=r.id GROUP BY cl.assigned_recruiter_id ORDER BY total_assigned DESC`).all());
+}

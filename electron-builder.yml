@@ -1,0 +1,47 @@
+appId:        com.creatorradar.app
+productName:  CreatorRadar AI
+copyright:    "Copyright © 2024 CreatorRadar AI"
+
+directories:
+  buildResources: build
+  output:         dist-installer
+
+files:
+  - dist/**/*
+  - node_modules/**/*
+  - package.json
+  - "!node_modules/.cache/**"
+  - "!node_modules/**/*.md"
+  - "!**/*.d.ts"
+  - "!**/*.map"
+
+extraMetadata:
+  main: dist/main/main.js
+
+icon: build/creatorradar-icon.png
+
+win:
+  target:
+    - target: nsis
+      arch:
+        - x64
+  icon:                    build/creatorradar-icon.png
+  requestedExecutionLevel: asInvoker
+  artifactName:            "${productName}-${version}-Setup.exe"
+
+nsis:
+  oneClick:                           false
+  allowToChangeInstallationDirectory: true
+  createDesktopShortcut:              true
+  createStartMenuShortcut:            true
+  shortcutName:                       "CreatorRadar AI"
+  menuCategory:                       "CreatorRadar AI"
+  installerIcon:                      build/creatorradar-icon.ico
+  uninstallerIcon:                    build/creatorradar-icon.ico
+  deleteAppDataOnUninstall:           false
+  artifactName:                       "CreatorRadar-AI-Setup-${version}.exe"
+  runAfterFinish:                     true
+  include:                            build/installer-extras.nsh
+
+npmRebuild: true
+publish:    null
