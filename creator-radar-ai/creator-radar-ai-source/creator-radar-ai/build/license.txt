@@ -1,0 +1,27 @@
+CreatorRadar AI — Software License Agreement
+
+Copyright (c) 2024 CreatorRadar AI. All rights reserved.
+
+By installing or using CreatorRadar AI, you agree to the following terms:
+
+1. GRANT OF LICENSE
+   You are granted a non-exclusive, non-transferable license to install
+   and use this software on computers you own or control.
+
+2. RESTRICTIONS
+   You may not distribute, sell, sublicense, reverse engineer, or
+   remove copyright notices from this software.
+
+3. DATA STORAGE
+   All data is stored locally. No data is transmitted to external servers.
+
+4. NO AUTOMATED MESSAGING
+   This software never sends messages automatically. All outreach must
+   be performed manually by the user.
+
+5. DISCLAIMER
+   This software is provided "as is" without warranty of any kind.
+
+6. LIMITATION OF LIABILITY
+   In no event shall the authors be liable for indirect, incidental,
+   or consequential damages.
